@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS department;
-DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS employee;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS department;
 
 CREATE TABLE department (
     dept_id INTEGER PRIMARY KEY NOT NULL,
     deptName VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE empRole (
-    empRole_id INTEGER PRIMARY KEY NOT NULL,
+CREATE TABLE role (
+    role_id INTEGER PRIMARY KEY NOT NULL,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
     department_id INTEGER,
@@ -16,10 +16,11 @@ CREATE TABLE empRole (
 );
 
 CREATE TABLE employee (
-    emp_id INTEGER PRIMARY KEY NOT NULL,
+    emp_id INTEGER PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    role_id INTEGER,
-    manager_id INTEGER DEFAULT NULL,
-    CONSTRAINT fk_empRole FOREIGN KEY (role_id) REFERENCES empRole(empRole_id) ON DELETE SET NULL
+    empRole_id INTEGER,
+    manager_id INTEGER,
+    CONSTRAINT fk_employeeRole FOREIGN KEY (empRole_id) REFERENCES role(role_id) ON DELETE SET NULL,
+    CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(emp_id) ON DELETE SET NULL
 );
