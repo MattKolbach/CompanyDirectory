@@ -3,12 +3,12 @@ DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS department;
 
 CREATE TABLE department (
-    dept_id INTEGER PRIMARY KEY NOT NULL,
+    dept_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     deptName VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
-    role_id INTEGER PRIMARY KEY NOT NULL,
+    role_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
     department_id INTEGER,
@@ -16,7 +16,7 @@ CREATE TABLE role (
 );
 
 CREATE TABLE employee (
-    emp_id INTEGER PRIMARY KEY,
+    emp_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     empRole_id INTEGER,
