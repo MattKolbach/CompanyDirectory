@@ -145,76 +145,6 @@ function addADepartment() {
     });
 }
 
-//////////  add a role  //////////()()()()()()()()()()()()()()()()()()()()()()()()()
-// function addARole() {
-//   function viewAllDepartmentsTable() {
-//     db.query("SELECT * FROM department", (err, results) => {
-//       if (err) {
-//         console.log(err);
-//       }
-//       console.log(`
-// +-------------------+
-// |  ALL DEPARTMENTS  |
-// +-------------------+`
-//       );
-//       console.table(results);
-//     });
-//   }
-//   viewAllDepartmentsTable();
-//   inquirer
-//     .prompt([
-//       {
-//         type: "input",
-//         name: "title",
-//         message: "What ROLE would you like to add?",
-//         validate: (title) => {
-//           if (title) {
-//             return true;
-//           } else {
-//             console.log("Please enter the name of the new role.");
-//             return false;
-//           }
-//         },
-//       },
-//       {
-//         type: "input",
-//         name: "salary",
-//         message: "What is the base yearly salary for this position?",
-//         validate: (salary) => {
-//           if (salary) {
-//             return true;
-//           } else {
-//             console.log("Please enter a valid salary number.");
-//             return false;
-//           }
-//         },
-//       },
-//       {
-//         type: "input",
-//         name: "department_id",
-//         message: "What is is department ID that this position belongs to?",
-//         validate: (department_id) => {
-//           if (department_id) {
-//             return true;
-//           } else {
-//             console.log("Please enter a valid salary number.");
-//             return false;
-//           }
-//         },
-//       },
-//     ])
-//     .then((newRole) => {
-//       db.query(`INSERT INTO role SET ?`, newRole, (err, result) => {
-//         if (err) {
-//           console.log(err);
-//         }
-//         //console.log(result);
-//         viewAllRoles();
-//       });
-//     });
-// }
-///////////////////////()()()()()()()()()()()()()()()()()()()()()()()()()()()()
-
 //////////  create new role  //////////
 async function addARole() {
   console.log(
@@ -225,10 +155,6 @@ async function addARole() {
   const viewAllDepartments = await db
     .promise()
     .query(`SELECT dept_id AS value, deptName AS name FROM department`);
-
-  // const allRoles = await db
-  //   .promise()
-  //   .query(`SELECT role_id AS value, title AS name FROM role`);
     
   const createNewRole = await inquirer.prompt([
       {
@@ -266,14 +192,13 @@ async function addARole() {
   ]);
   const createNewRoleInSQL = await db
     .promise()
-    .query(`INSERT INTO role ('title', 'salary', 'department_id') VALUES ('title = ?', 'salary = ?', 'dept_id = ?')`, [
+    .query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [
       createNewRole.title,
-      createNewRole.salary,
+      +createNewRole.salary,
       createNewRole.dept_id
     ]);
     
-  console.log("role created");
-  init();
+  viewAllRoles();
 }
 
 //////////  update employee role  //////////
