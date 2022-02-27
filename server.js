@@ -236,7 +236,7 @@ async function updateEmpRole() {
       empRoleUpdate.role_id,
       empRoleUpdate.emp_id,
     ]);
-    
+
   viewAllEmployees();
   //init();
 }
@@ -301,7 +301,7 @@ async function addAnEmployee() {
     .query(`INSERT INTO employee (first_name, last_name, empRole_id, manager_id) VALUES (?, ?, ?, ?)`, [
       createNewEmployee.first_name,
       createNewEmployee.last_name,
-      createNewEmployee.empRole_id,
+      createNewEmployee.role_id,
       createNewEmployee.manager_id
     ]);
     
