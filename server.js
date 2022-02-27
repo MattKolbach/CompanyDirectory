@@ -71,7 +71,7 @@ function viewAllDepartments() {
       console.log(err);
     }
     console.log(
-      `+-------------------+
+`+-------------------+
 |  ALL DEPARTMENTS  |
 +-------------------+`
     );
@@ -87,7 +87,7 @@ function viewAllRoles() {
       console.log(err);
     }
     console.log(
-      `+------------------------------------------------+
+`+------------------------------------------------+
 |                  ALL ROLES                     |
 +------------------------------------------------+`
     );
@@ -105,7 +105,7 @@ function viewAllEmployees() {
         console.log(err);
       }
       console.log(
-        `+------------------------------------------------------------------------------+
+`+------------------------------------------------------------------------------+
 |                                ALL EMPLOYEES                                 |
 +------------------------------------------------------------------------------+`
       );
@@ -236,8 +236,77 @@ async function updateEmpRole() {
       empRoleUpdate.role_id,
       empRoleUpdate.emp_id,
     ]);
-  console.log("employee role updated");
-  init();
+    
+  viewAllEmployees();
+  //init();
 }
 
+//////////  create new role  //////////
+async function addAnEmployee() {
+  console.log(
+`+-----------------------------------------------------------+
+|                     ADD NEW EMPLOYEE                      |
++-----------------------------------------------------------+`
+  );
+  const allRoles = await db
+    .promise()
+    .query(`SELECT role_id AS value, title AS name FROM role`);
+
+  const allEmployees = await db
+    .promise()
+    .query(`SELECT emp_id AS value, last_name AS name FROM employee`);
+    
+  const createNewEmployee = await inquirer.prompt([
+      {
+        type: "input",
+        name: "first_name",
+        message: "What is the new employee's first name?",
+        validate: (first_name) => {
+          if (first_name) {
+            return true;
+          } else {
+            console.log("Please enter the employee's first name.");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "last_name",
+        message: "What is the new employee's last name?",
+        validate: (last_name) => {
+          if (last_name) {
+            return true;
+          } else {
+            console.log("Please enter a valid last name.");
+            return false;
+          }
+        },
+      },
+      {
+        type: "list",
+        name: "role_id",
+        message: "What is the new employee's role?",
+        choices: allRoles[0],
+      },
+      {
+        type: "list",
+        name: "manager_id",
+        message: "Who is the new employee's manager?",
+        choices: allEmployees[0],
+      },
+  ]);
+  const createNewEmployeeInSQL = await db
+    .promise()
+    .query(`INSERT INTO employee (first_name, last_name, empRole_id, manager_id) VALUES (?, ?, ?, ?)`, [
+      createNewEmployee.first_name,
+      createNewEmployee.last_name,
+      createNewEmployee.empRole_id,
+      createNewEmployee.manager_id
+    ]);
+    
+  viewAllEmployees();
+}
+
+/////  Initial file start  /////
 init();
